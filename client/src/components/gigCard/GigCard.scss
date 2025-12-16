@@ -1,0 +1,216 @@
+.gigCard {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  transform: translateY(0);
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease, background-color 0.18s ease;
+
+  .thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #f3f4f6;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 0.35s ease;
+    }
+  }
+
+  .info {
+    padding: 12px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      img {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+
+      span {
+        font-size: 13px;
+        font-weight: 500;
+        color: #4b5563;
+      }
+
+      &.error-user span {
+        color: #9ca3af;
+      }
+    }
+
+    .skeleton-user {
+      .avatar-skeleton {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(
+          90deg,
+          #e5e7eb,
+          #f3f4f6,
+          #e5e7eb
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+      }
+
+      .text-skeleton {
+        width: 80px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          #e5e7eb,
+          #f3f4f6,
+          #e5e7eb
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+      }
+    }
+
+    .title {
+      color: #111827;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-height: 40px;
+    }
+
+    .metaRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2px;
+
+      .star {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+
+        img {
+          width: 14px;
+          height: 14px;
+        }
+
+        span {
+          font-size: 13px;
+          font-weight: 600;
+          color: #fbbf24;
+        }
+      }
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 0 14px;
+  }
+
+  .detail {
+    padding: 10px 14px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .fav {
+      border: none;
+      background: transparent;
+      padding: 4px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.18s ease, transform 0.18s ease;
+
+      img {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+      }
+
+      &:hover {
+        background-color: #fee2e2;
+        transform: translateY(-1px);
+      }
+    }
+
+    .price {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+
+      span {
+        color: #9ca3af;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      h2 {
+        color: #111827;
+        font-size: 18px;
+        font-weight: 600;
+
+        sup {
+          font-size: 11px;
+          font-weight: 500;
+          margin-right: 1px;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.18);
+    border-color: #32d8c8;
+    background-color: #f9fffd;
+
+    .thumbnail img {
+      transform: scale(1.08);
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+}
+
+/* shimmer for loading skeleton */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

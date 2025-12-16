@@ -1,0 +1,315 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(90deg, #32d8c8, #1597b4);
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    color 0.3s ease, transform 0.3s ease;
+
+  &.active {
+    background-color: #ffffff;
+    background-image: none;
+    color: #111827;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(0);
+
+    .logo .dot {
+      color: #32d8c8;
+    }
+
+    .hamburger span {
+      background-color: #111827;
+    }
+
+    .joinBtn {
+      background-color: #32d8c8;
+      color: #ffffff;
+      border-color: #32d8c8;
+    }
+
+    .signin {
+      color: #111827;
+    }
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 14px 18px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+
+    .text {
+      text-transform: lowercase;
+    }
+
+    .dot {
+      font-weight: 900;
+      color: #0f766e;
+      transform: translateY(-2px);
+    }
+  }
+
+  .hamburger {
+    display: none;
+    width: 34px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1000;
+
+    span {
+      width: 100%;
+      height: 3px;
+      border-radius: 999px;
+      background-color: #ffffff;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    &.open {
+      span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+      }
+      span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+
+    .navItem {
+      white-space: nowrap;
+      cursor: pointer;
+      position: relative;
+      padding-bottom: 2px;
+      transition: transform 0.2s ease;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 0;
+        height: 2px;
+        border-radius: 999px;
+        background-color: #ffffff;
+        transition: width 0.25s ease;
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+
+    .authButtons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      .signin {
+        font-size: 14px;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+        white-space: nowrap;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      .joinBtn {
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: 1px solid #ffffff;
+        background-color: transparent;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+          background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          background-color: #ffffff;
+          color: #1597b4;
+          border-color: #ffffff;
+          box-shadow: 0 10px 18px rgba(0, 0, 0, 0.16);
+        }
+      }
+    }
+
+    /* ✅ NEW: profile link (no dropdown) */
+    .userWrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .userLink {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+
+      img {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  hr {
+    width: 100%;
+    max-width: 1200px;
+    border: none;
+    border-top: 0.5px solid #e5e7eb;
+    margin: 0 auto;
+  }
+
+  .menu {
+    width: 100%;
+    max-width: 1200px;
+    padding: 8px 18px 10px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #4b5563;
+    font-weight: 400;
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    font-size: 13px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+
+    .menuLink {
+      white-space: nowrap;
+      opacity: 0.9;
+      position: relative;
+      transition: color 0.2s ease, transform 0.2s ease;
+
+      &:hover {
+        color: #111827;
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  /* small scroll bar for horizontal category */
+  .menu::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .menu::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 999px;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 900px) {
+    .container {
+      padding-inline: 14px;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .links {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      max-width: 100%;
+      padding: 14px 18px 18px;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #ffffff;
+      color: #111827;
+      border-radius: 0 0 18px 18px;
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.16);
+      transform: translateY(-12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      gap: 12px;
+
+      .navItem::after {
+        background-color: #1597b4;
+      }
+
+      .authButtons .joinBtn {
+        background-color: #1597b4;
+        border-color: #1597b4;
+      }
+    }
+
+    .links.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu {
+      font-size: 12px;
+      padding-inline: 14px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .logo {
+      font-size: 22px;
+    }
+
+    .menu {
+      display: none; /* hides second row on very small phones */
+    }
+  }
+}

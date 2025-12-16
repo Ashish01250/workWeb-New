@@ -1,0 +1,126 @@
+.messages {
+  display: flex;
+  justify-content: center;
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 40px 20px 60px;
+  }
+
+  .titleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    p {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+  }
+
+  .state {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #4b5563;
+
+    &.error {
+      color: #b91c1c;
+    }
+
+    &.empty {
+      color: #6b7280;
+    }
+  }
+
+  .tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
+    min-width: 640px;
+
+    th,
+    td {
+      text-align: left;
+      padding: 10px 16px;
+    }
+
+    th {
+      background-color: #f9fafb;
+      font-weight: 500;
+      color: #4b5563;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    tr {
+      border-bottom: 1px solid #f3f4f6;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: #f9fafb;
+      }
+
+      &.active {
+        background-color: #ecfeff;
+      }
+    }
+
+    .link {
+      text-decoration: none;
+      color: #1a73e8;
+      font-size: 14px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    button {
+      background-color: #1dbf73;
+      color: white;
+      font-weight: 500;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 999px;
+      font-size: 13px;
+      transition: background-color 0.2s ease, transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+      &:hover {
+        background-color: #16a763;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(22, 163, 74, 0.45);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding-inline: 16px;
+    }
+
+    .titleRow h1 {
+      font-size: 21px;
+    }
+  }
+}

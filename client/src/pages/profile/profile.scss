@@ -1,0 +1,304 @@
+.profilePage {
+  max-width: 1200px;
+  margin: 40px auto 60px;
+  padding: 0 24px;
+  color: #111827;
+
+  /* subtle gradient background behind everything */
+  background: radial-gradient(circle at top left, #ecfeff 0, transparent 55%),
+    radial-gradient(circle at bottom right, #f5f3ff 0, transparent 55%);
+
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+    padding: 18px 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ffffff, #f3f4ff);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e5e7eb;
+
+    .avatarWrapper {
+      padding: 4px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 180deg,
+        #32d8c8,
+        #1d4ed8,
+        #a855f7,
+        #32d8c8
+      );
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #f3f4f6;
+      border: 3px solid #ffffff;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .nameRow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      h1 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 0;
+      }
+
+      .roleBadge {
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+
+        &.seller {
+          background-color: #ecfdf5;
+          color: #047857;
+        }
+
+        &.buyer {
+          background-color: #e0f2fe;
+          color: #0369a1;
+        }
+      }
+
+      .email {
+        font-size: 14px;
+        color: #4b5563;
+      }
+
+      .country {
+        font-size: 14px;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .profileGrid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 24px;
+
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e5e7eb;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 48px rgba(15, 23, 42, 0.16);
+      border-color: #d1d5db;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .muted {
+      color: #4b5563;
+      font-size: 14px;
+
+      &.small {
+        font-size: 13px;
+      }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background-color: #ecfdf5;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease,
+        box-shadow 0.2s ease, transform 0.1s ease;
+
+      &.primary {
+        background-color: #32d8c8;
+        color: #ffffff;
+        box-shadow: 0 10px 24px rgba(45, 212, 191, 0.4);
+        border: none;
+
+        &:hover:not(:disabled) {
+          background-color: #12b6aa;
+          transform: translateY(-1px);
+        }
+
+        &:disabled {
+          opacity: 0.7;
+          cursor: default;
+          box-shadow: none;
+        }
+      }
+
+      &.ghost {
+        background-color: #f9fafb;
+        color: #111827;
+        border: 1px solid #e5e7eb;
+
+        &:hover {
+          background-color: #e5e7eb;
+        }
+      }
+    }
+
+    .linksList {
+      list-style: disc;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+
+      li a {
+        color: #2563eb;
+        font-size: 14px;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .quickLinksBlock {
+      margin-top: 18px;
+
+      h3 {
+        font-size: 15px;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  /* editable seller / user form */
+  .editCard {
+    .profileForm {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .fieldRow {
+      display: flex;
+      gap: 14px;
+
+      @media (max-width: 700px) {
+        flex-direction: column;
+      }
+    }
+
+    .field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #4b5563;
+      }
+
+      input,
+      textarea {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        font-size: 14px;
+        outline: none;
+        background-color: #f9fafb;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease,
+          background-color 0.2s ease;
+
+        &:focus {
+          border-color: #32d8c8;
+          box-shadow: 0 0 0 1px rgba(50, 216, 200, 0.35);
+          background-color: #ffffff;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+
+    .formFooter {
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .statusMsg {
+        font-size: 13px;
+        color: #059669;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    margin-top: 24px;
+    padding: 0 16px;
+
+    .profileHeader {
+      padding: 16px 18px;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+}
