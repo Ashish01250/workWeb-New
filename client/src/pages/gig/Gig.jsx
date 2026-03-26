@@ -1,7 +1,7 @@
 // src/pages/gig/Gig.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./gig.scss";
-import { Slider } from "infinite-react-carousel/lib";
+// import { Slider } from "infinite-react-carousel/lib";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
@@ -12,22 +12,24 @@ function Gig() {
   const { id } = useParams();
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
-  const isSeller = currentUser?.isSeller;
 
-  const {
-    isLoading,
-    error,
-    data: gig,
-  } = useQuery({
+  const [fullscreenIndex, setFullscreenIndex] = useState(null);
+
+  const openFullscreen = (index) => setFullscreenIndex(index);
+  const closeFullscreen = () => setFullscreenIndex(null);
+
+  // Load Gig
+  const { isLoading, error, data: gig } = useQuery({
     queryKey: ["gig", id],
     queryFn: () => newRequest.get(`/gigs/single/${id}`).then((res) => res.data),
   });
 
   const userId = gig?.userId;
 
+  // Load Seller
   const {
-    isLoading: isLoadingUser,
-    error: errorUser,
+    isLoading: isSellerLoading,
+    error: sellerError,
     data: seller,
   } = useQuery({
     queryKey: ["user", userId],
@@ -35,180 +37,130 @@ function Gig() {
     enabled: !!userId,
   });
 
-  useEffect(() => {
-    // optional side-effects
-  }, [gig]);
-
-  if (isLoading) return <div className="gig gig-center">Loading...</div>;
-  if (error) return <div className="gig gig-center">Something went wrong.</div>;
-  if (!gig) return <div className="gig gig-center">Gig not found.</div>;
+  if (isLoading) return <div className="gig-center">Loading…</div>;
+  if (error) return <div className="gig-center">Error loading gig</div>;
+  if (!gig) return <div className="gig-center">Gig not found</div>;
 
   const rating =
-    gig.starNumber && gig.starNumber !== 0
+    gig.starNumber > 0
       ? Math.round(gig.totalStars / gig.starNumber)
       : null;
 
   const images = [gig.cover, ...(gig.images || [])].filter(Boolean);
 
-  const isOwner = currentUser?._id === gig.userId;
-
   return (
-    <div className="gig">
+    <div className="gigPage">
       <div className="container">
+
+        {/* LEFT SIDE (IMAGES + DETAILS) */}
         <div className="left">
-          <span className="breadcrumbs">
-            workWave <span className="sep">{">"}</span>{" "}
-            <Link to={`/gigs?cat=${encodeURIComponent(gig.cat)}`}>{gig.cat}</Link>{" "}
-            <span className="sep">{">"}</span>
-          </span>
+          <h1 className="gigTitle">{gig.title}</h1>
 
-          <h1 className="title">{gig.title}</h1>
-
-          {isLoadingUser ? (
-            <div className="user user-placeholder">Loading seller...</div>
-          ) : errorUser ? (
-            <div className="user user-placeholder">Seller unavailable</div>
-          ) : (
-            <div className="user">
-              <img
-                className="pp"
-                src={seller?.img || "/img/noavatar.jpg"}
-                alt={seller?.username}
-              />
-              <span className="name">{seller?.username}</span>
-              {rating && (
-                <div className="stars">
-                  {Array(rating)
-                    .fill(0)
-                    .map((_, i) => (
-                      <img src="/img/star.png" alt="star" key={i} />
-                    ))}
-                  <span className="rating">{rating}</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {images.length > 0 && (
-            <div className="sliderWrap">
-              <Slider
-                dots
-                arrows
-                autoplay={false}
-                arrowsScroll={1}
-                className="slider"
-                adaptiveHeight={true}
-              >
-                {images.map((img, i) => (
-                  <div key={`${img}-${i}`} className="slideItem">
-                    <img src={img} alt={`gig-${i}`} />
-                  </div>
-                ))}
-              </Slider>
-            </div>
-          )}
-
-          <h2 className="sectionTitle">About this gig</h2>
-          <p className="desc">{gig.desc}</p>
-
+          {/* Seller Quick Info */}
           {seller && (
-            <div className="seller">
-              <h2 className="sectionTitle">About the seller</h2>
-              <div className="user seller-header">
-                <img src={seller.img || "/img/noavatar.jpg"} alt={seller.username} />
-                <div className="info">
-                  <span className="seller-name">{seller.username}</span>
-                  {rating && (
-                    <div className="stars">
-                      {Array(rating)
-                        .fill(0)
-                        .map((_, i) => (
-                          <img src="/img/star.png" alt="star" key={i} />
-                        ))}
-                      <span className="rating">{rating}</span>
-                    </div>
-                  )}
-                  <button
-                    className="contact-btn"
-                    onClick={() => {
-                      if (!currentUser) return navigate("/login");
-                      navigate(`/message/${seller._id}`);
-                    }}
-                  >
-                    Contact me
-                  </button>
-                </div>
-              </div>
-
-              <div className="box">
-                <div className="items">
-                  <div className="item">
-                    <span className="title">From</span>
-                    <span className="desc">{seller.country || "Not set"}</span>
-                  </div>
-                  <div className="item">
-                    <span className="title">Member since</span>
-                    <span className="desc">Oct 2024</span>
-                  </div>
-                  <div className="item">
-                    <span className="title">Avg. response time</span>
-                    <span className="desc">4 hours</span>
-                  </div>
-                  <div className="item">
-                    <span className="title">Last delivery</span>
-                    <span className="desc">1 day</span>
-                  </div>
-                  <div className="item">
-                    <span className="title">Languages</span>
-                    <span className="desc">English</span>
-                  </div>
-                </div>
-                <hr />
-                <p className="seller-desc">{seller.desc || "No description provided."}</p>
+            <div className="sellerMini">
+              <img src={seller.img || "/img/noavatar.jpg"} alt="" />
+              <div>
+                <h4>{seller.username}</h4>
+                {rating && (
+                  <p className="ratingStar">
+                    ⭐ {rating} ({gig.starNumber} reviews)
+                  </p>
+                )}
               </div>
             </div>
           )}
 
-          <div className="reviews-wrapper">
-            <Reviews gigId={id} canWrite={!!currentUser && !currentUser.isSeller && !isOwner} />
-          </div>
+          {/* IMAGE SLIDER */}
+          <Slider dots arrows autoplay={false} arrowsScroll={1}>
+            {images.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt=""
+                className="sliderImg"
+                onClick={() => openFullscreen(index)}
+              />
+            ))}
+          </Slider>
+
+          {/* Fullscreen Image Viewer */}
+          {fullscreenIndex !== null && (
+            <div className="fullscreenOverlay" onClick={closeFullscreen}>
+              <img
+                src={images[fullscreenIndex]}
+                className="fullscreenImage"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+          )}
+
+          {/* ABOUT SECTION */}
+          <h2 className="sectionTitle">About This Gig</h2>
+          <p className="gigDesc">{gig.desc}</p>
+
+          {/* REVIEWS */}
+          <Reviews
+            gigId={id}
+            canWrite={!!currentUser && !currentUser.isSeller}
+          />
         </div>
 
+        {/* RIGHT SIDE (SELLER INFO + PAYMENT BOX) */}
         <div className="right">
-          <div className="card">
-            <div className="price">
-              <h3>{gig.shortTitle}</h3>
-              <h2>
-                $ <span>{gig.price}</span>
-              </h2>
+
+          {/* SELLER CARD */}
+          {seller && (
+            <div className="sellerBox">
+              <div className="sellerHeader">
+                <img src={seller.img || "/img/noavatar.jpg"} alt="" />
+                <div>
+                  <h3>{seller.username}</h3>
+                  <p className="flagRow">
+                    <img
+                      src={`https://flagsapi.com/${seller.countryCode || "IN"}/flat/32.png`}
+                      alt=""
+                      className="flag"
+                    />
+                    {seller.country || "Unknown"}
+                  </p>
+
+                  {rating && <span className="ratingDisplay">⭐ {rating}</span>}
+                </div>
+              </div>
+
+              <div className="sellerMeta">
+                <p><b>Member Since:</b> {seller.createdAt?.slice(0, 10)}</p>
+                <p><b>Last Active:</b> 1 day ago</p>
+              </div>
+
+              <button
+                className="contactBtn"
+                onClick={() => navigate(`/message/${seller._id}`)}
+              >
+                Contact Seller
+              </button>
             </div>
+          )}
+
+          {/* PAYMENT BOX */}
+          <div className="paymentBox">
+            <h3>{gig.shortTitle}</h3>
+            <h2 className="priceTag">$ {gig.price}</h2>
             <p className="shortDesc">{gig.shortDesc}</p>
 
-            <div className="details">
-              <div className="item">
-                <img src="/img/clock.png" alt="delivery" />
-                <span>{gig.deliveryTime} Days Delivery</span>
-              </div>
-              <div className="item">
-                <img src="/img/recycle.png" alt="revisions" />
-                <span>{gig.revisionNumber} Revisions</span>
-              </div>
-            </div>
-
-            <div className="features">
-              {gig.features?.map((feature) => (
-                <div className="item" key={feature}>
-                  <img src="/img/greencheck.png" alt="included" />
-                  <span>{feature}</span>
-                </div>
-              ))}
+            <div className="paymentInfo">
+              <p>⏳ {gig.deliveryTime} Days Delivery</p>
+              <p>♻️ {gig.revisionNumber} Revisions</p>
             </div>
 
             <Link to={`/pay/${id}`}>
-              <button className="continue-btn">Continue</button>
+              <button className="buyBtn">Continue</button>
             </Link>
           </div>
+
         </div>
+
       </div>
     </div>
   );
