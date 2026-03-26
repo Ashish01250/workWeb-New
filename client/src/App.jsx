@@ -17,8 +17,8 @@ import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
 import Success from "./pages/success/Success";
 import Pay from "./pages/pay/Pay";
-import Profile from "./pages/profile/profile";   // ⭐ NEW
-import EditGig from "./pages/editGig/EditGig";
+import Profile from "./pages/profile/profile"   // ⭐ NEW
+import EditGig from "./pages/editGig/EditGig"; 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import GigProtectionRoute from "./components/GigProtectionRoute/GigProtectionRoute";
