@@ -126,7 +126,7 @@ function App() {
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
         { path: "/pay/:id", element: <Pay currentUser={currentUser} /> },
-        { path: "/success", element: <Success currentUser={currentUser} /> },
+        { path: "/success", element: <Success /> },
       ],
     },
   ]);
