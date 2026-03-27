@@ -1,6 +1,6 @@
 // src/pages/gig/Gig.jsx
 import React, { useState } from "react";
-import "./gig.scss";
+import "./Gig.scss";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
