@@ -15,7 +15,7 @@ import Orders from "./pages/orders/Orders";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
-import Success from "./pages/success/success";
+//import Success from "./pages/success/Success";
 import Pay from "./pages/pay/Pay";
 import Profile from "./pages/profile/profile"   // ⭐ NEW
 import EditGig from "./pages/editGig/EditGig"; 
