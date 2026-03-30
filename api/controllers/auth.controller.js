@@ -1,10 +1,10 @@
-// controllers/auth.controller.js
 import User from "../models/user.model.js";
 import createError from "../utils/createError.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendEmail } from "../utils/sendEmail.js";
 
-// REGISTER USER
+// ================= REGISTER =================
 export const register = async (req, res, next) => {
   try {
     const existingUser = await User.findOne({ username: req.body.username });
@@ -34,11 +34,11 @@ export const register = async (req, res, next) => {
   }
 };
 
-// LOGIN USER
+// ================= LOGIN =================
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    
+
     if (!user) return next(createError(404, "User not found!"));
 
     const isCorrect = bcrypt.compareSync(req.body.password, user.password);
@@ -54,7 +54,7 @@ export const login = async (req, res, next) => {
     const { password, ...info } = user._doc;
 
     res
-      .cookie("accessToken", token, {
+      .cookie("accessToken", {
         httpOnly: true,
       })
       .status(200)
@@ -64,10 +64,99 @@ export const login = async (req, res, next) => {
   }
 };
 
-// LOGOUT USER
+// ================= LOGOUT =================
 export const logout = (req, res) => {
   res
     .clearCookie("accessToken", { httpOnly: true })
     .status(200)
     .send("User has been logged out.");
+};
+
+// ================= SEND RESET OTP =================
+export const sendResetOTP = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return next(createError(400, "Email is required"));
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(createError(404, "User not found"));
+    }
+
+    // generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.resetOTP = otp;
+    user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
+
+    await user.save();
+
+    // send email
+    await sendEmail(
+      user.email,
+      "WorkWave Password Reset Code",
+      `Hi ${user.username},
+
+Your OTP is: ${otp}
+
+This code will expire in 10 minutes.
+
+- WorkWave Team`
+    );
+
+    console.log("OTP:", otp); // for testing
+
+    res.status(200).json({
+      success: true,
+      message: "OTP sent to email",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ================= VERIFY OTP + RESET PASSWORD =================
+export const verifyOTPAndResetPassword = async (req, res, next) => {
+  try {
+    const { email, otp, password } = req.body;
+
+    if (!email || !otp || !password) {
+      return next(createError(400, "Email, OTP and password required"));
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) return next(createError(404, "User not found"));
+
+    if (!user.resetOTP || !user.resetOTPExpire) {
+      return next(createError(400, "No reset request found"));
+    }
+
+    if (user.resetOTP !== otp) {
+      return next(createError(400, "Invalid OTP"));
+    }
+
+    if (user.resetOTPExpire < Date.now()) {
+      return next(createError(400, "OTP expired"));
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 5);
+
+    user.password = hashedPassword;
+    user.resetOTP = "";
+    user.resetOTPExpire = null;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successful",
+    });
+  } catch (err) {
+    next(err);
+  }
 };
