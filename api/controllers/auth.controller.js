@@ -91,7 +91,7 @@ export const sendResetOTP = async (req, res, next) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     user.resetOTP = otp;
-    user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
+    user.resetOTPExpire = Date.now() + 30 * 1000;
 
     await user.save();
 
@@ -103,12 +103,12 @@ export const sendResetOTP = async (req, res, next) => {
 
 Your OTP is: ${otp}
 
-This code will expire in 10 minutes.
+This code will expire in 30 sec.
 
 - WorkWave Team`
     );
 
-    console.log("OTP:", otp); // for testing
+    // console.log("OTP:", otp); // for testing
 
     res.status(200).json({
       success: true,

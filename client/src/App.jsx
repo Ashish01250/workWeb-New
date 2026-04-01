@@ -1,4 +1,3 @@
-// App.jsx
 import "./app.scss";
 import "./index.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
@@ -18,7 +17,12 @@ import MyGigs from "./pages/myGigs/MyGigs";
 import Success from "./pages/success/Success";
 import Pay from "./pages/pay/Pay";
 import Profile from "./pages/profile/Profile";
-import EditGig from "./pages/editGig/EditGig"; 
+import EditGig from "./pages/editGig/EditGig";
+
+// ✅ NEW IMPORTS
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import ResetPassword from "./pages/resetPassword/ResetPassword";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import GigProtectionRoute from "./components/GigProtectionRoute/GigProtectionRoute";
@@ -103,7 +107,6 @@ function App() {
             </ProtectedRoutes>
           ),
         },
-
         {
           path: "/profile",
           element: (
@@ -123,8 +126,14 @@ function App() {
           ),
         },
 
+        // ✅ PUBLIC ROUTES
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
+
+        // ✅ NEW ROUTES (FORGOT PASSWORD FLOW)
+        { path: "/forgot-password", element: <ForgotPassword /> },
+        { path: "/reset-password", element: <ResetPassword /> },
+
         { path: "/pay/:id", element: <Pay currentUser={currentUser} /> },
         { path: "/success", element: <Success /> },
       ],
@@ -137,4 +146,5 @@ function App() {
     </QueryClientProvider>
   );
 }
+
 export default App;

@@ -1,4 +1,3 @@
-// Login.jsx
 import React, { useState } from "react";
 import "./Login.scss";
 import newRequest from "../../utils/newRequest";
@@ -63,6 +62,14 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          {/* ✅ FORGOT PASSWORD */}
+          <p
+            className="forgot-link"
+            onClick={() => navigate("/forgot-password")}
+          >
+            Forgot Password?
+          </p>
 
           {error && <p className="error-message">{error}</p>}
 
