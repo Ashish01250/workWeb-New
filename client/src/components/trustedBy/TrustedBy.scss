@@ -1,110 +1,171 @@
+// ═══════════════════════════════════════════════════════
+//  TrustedBy — compact single-row infinite logo strip
+// ═══════════════════════════════════════════════════════
+
 .trustedBy {
-  --scroll-duration: 18s; // control speed here
+  position: relative;
+  background: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 0;
+  overflow: hidden; // ← CRITICAL: clips the scrolling track
 
-  background-color: #f9fafb;
-  padding: 18px 0;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid #e5e7eb;
-  overflow: hidden;
+  // ── Edge fade gradients ───────────────────────────────
+  .fade-left,
+  .fade-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+  }
 
-  .container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 20px;
+  .fade-left {
+    left: 0;
+    background: linear-gradient(to right, #ffffff 0%, transparent 100%);
+  }
+
+  .fade-right {
+    right: 0;
+    background: linear-gradient(to left, #ffffff 0%, transparent 100%);
+  }
+
+  // ── Inner wrapper — single row, no flex-wrap ──────────
+  &__inner {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 28px;
+    padding: 0 32px;
+    // Do NOT set max-width or margin:auto here —
+    // the scrolling track must be full-width
+  }
 
-    .title {
-      font-size: 14px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-weight: 600;
-    }
+  // ── "Trusted by" label ────────────────────────────────
+  &__label {
+    flex-shrink: 0; // never wraps or shrinks
+    font-size: 13px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+    padding-right: 4px;
+    border-right: 1.5px solid #e5e7eb;
+    padding-right: 28px;
+  }
 
-    .logo-strip {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-    }
+  // ── Scrolling track container ─────────────────────────
+  &__track-wrapper {
+    flex: 1;         // takes remaining width
+    overflow: hidden; // clips the moving strip
+    position: relative;
+  }
 
-    /* this is the moving track */
-    .logo-scroll {
-      display: flex;
-      align-items: center;
-      gap: 40px;
+  // ── The moving strip ──────────────────────────────────
+  &__track {
+    display: flex;
+    align-items: center;
+    gap: 56px;
 
-      /* key: make the strip wider than the screen
-         so there is never a blank gap */
-      min-width: 200%;
-      justify-content: space-around;
+    // Width must exceed the visible area so we can scroll
+    // 3× logos ensures no gap when looping
+    width: max-content;
 
-      animation: logo-scroll var(--scroll-duration) linear infinite;
-      opacity: 0.9;
+    animation: trustedScroll 22s linear infinite;
 
-      img {
-        height: 36px;
-        object-fit: contain;
-        filter: grayscale(100%) brightness(0.65);
-        transition: filter 0.3s ease, transform 0.3s ease;
-
-        &:hover {
-          filter: grayscale(0%) brightness(1);
-          transform: translateY(-2px);
-        }
-      }
-    }
-
-    /* pause on hover */
-    .logo-strip:hover .logo-scroll {
+    // Pause on hover for UX polish
+    &:hover {
       animation-play-state: paused;
     }
   }
+
+  // ── Individual logo ───────────────────────────────────
+  &__logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%) brightness(0.55) contrast(1.1);
+      opacity: 0.75;
+      transition: filter 0.35s ease, opacity 0.35s ease, transform 0.3s ease;
+      display: block;
+
+      &:hover {
+        filter: grayscale(0%) brightness(1);
+        opacity: 1;
+        transform: translateY(-2px) scale(1.06);
+      }
+    }
+  }
 }
 
-/* infinite scroll animation:
-   strip contains logos twice, so moving -50%
-   makes second half move into place of first half
-   with NO empty gap */
-@keyframes logo-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+// ── Scroll animation ──────────────────────────────────────
+// We have 3 copies of N logos. Moving by -33.333% brings
+// copy 2 exactly to where copy 1 started → seamless loop.
+@keyframes trustedScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
 }
 
-/* responsive tweaks */
+// ── Responsive ───────────────────────────────────────────
 @media (max-width: 768px) {
   .trustedBy {
-    padding: 14px 0;
+    padding: 16px 0;
 
-    .container {
-      padding: 0 16px;
-      gap: 10px;
+    .fade-left,
+    .fade-right { width: 60px; }
 
-      .title {
-        font-size: 12px;
-        letter-spacing: 0.16em;
-      }
+    &__inner {
+      gap: 18px;
+      padding: 0 20px;
+    }
 
-      .logo-scroll {
-        gap: 28px;
+    &__label {
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      padding-right: 18px;
+    }
 
-        img {
-          height: 28px;
-        }
-      }
+    &__track {
+      gap: 40px;
+      animation-duration: 18s;
+    }
+
+    &__logo img {
+      height: 22px;
     }
   }
 }
 
 @media (max-width: 480px) {
   .trustedBy {
-    --scroll-duration: 20s; // a bit slower on very small screens
+    padding: 14px 0;
+
+    // On very small screens hide the label to save space
+    &__label {
+      display: none;
+    }
+
+    &__inner {
+      padding: 0 12px;
+    }
+
+    .fade-left,
+    .fade-right { width: 40px; }
+
+    &__track {
+      gap: 32px;
+      animation-duration: 16s;
+    }
+
+    &__logo img {
+      height: 20px;
+    }
   }
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import newRequest from "../../utils/newRequest";
 import "./Navbar.scss";
 
 function Navbar() {
@@ -10,22 +9,24 @@ function Navbar() {
   const { pathname } = useLocation();
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const isActive = () => {
+  const isHome = pathname === "/";
+  const isActiveNavbar = active || !isHome;
+
+  const handleScroll = () => {
     setActive(window.scrollY > 0);
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", isActive);
-    return () => window.removeEventListener("scroll", isActive);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // close mobile menu when route changes
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
   return (
-    <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
+    <div className={isActiveNavbar ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
           <Link className="link" to="/">
@@ -34,7 +35,7 @@ function Navbar() {
           <span className="dot">.</span>
         </div>
 
-        {/* Hamburger (mobile) */}
+        {/* Hamburger */}
         <button
           className={`hamburger ${mobileOpen ? "open" : ""}`}
           onClick={() => setMobileOpen((prev) => !prev)}
@@ -48,6 +49,7 @@ function Navbar() {
           <span className="navItem">workWave Business</span>
           <span className="navItem">Explore</span>
           <span className="navItem">English</span>
+
           {!currentUser?.isSeller && (
             <span className="navItem">Become a Seller</span>
           )}
@@ -64,6 +66,7 @@ function Navbar() {
               <Link to="/login" className="link">
                 <span className="signin">Sign in</span>
               </Link>
+
               <Link className="link" to="/register">
                 <button className="joinBtn">Join</button>
               </Link>
@@ -72,7 +75,7 @@ function Navbar() {
         </div>
       </div>
 
-      {(active || pathname !== "/") && (
+      {isActiveNavbar && (
         <>
           <hr />
           <div className="menu">
