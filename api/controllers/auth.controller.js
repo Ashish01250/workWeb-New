@@ -80,8 +80,14 @@ export const login = async (req, res, next) => {
       { expiresIn: "7d" }
     );
 
-    // remove password from response
-    const { password: userPassword, ...info } = user._doc;
+    // remove sensitive/internal fields
+    const {
+      password: userPassword,
+      resetOTP,
+      resetOTPExpire,
+      __v,
+      ...info
+    } = user._doc;
 
     // send cookie
     res
