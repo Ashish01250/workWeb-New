@@ -4,20 +4,30 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 
+
 // ================= REGISTER =================
 export const register = async (req, res, next) => {
   try {
-    const existingUser = await User.findOne({ username: req.body.username });
+    const { username, email, password } = req.body;
 
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists!",
-      });
+    // validation
+    if (!username || !email || !password) {
+      return next(createError(400, "All fields are required"));
     }
 
-    const hashedPassword = bcrypt.hashSync(req.body.password, 5);
+    // check existing user/email
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }],
+    });
 
+    if (existingUser) {
+      return next(createError(400, "Username or Email already exists"));
+    }
+
+    // hash password
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    // create user
     const newUser = new User({
       ...req.body,
       password: hashedPassword,
@@ -27,50 +37,83 @@ export const register = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: "User has been created.",
+      message: "User has been created successfully",
     });
+
   } catch (err) {
     next(createError(500, "Error creating user"));
   }
 };
 
+
 // ================= LOGIN =================
 export const login = async (req, res, next) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const { username, password } = req.body;
 
-    if (!user) return next(createError(404, "User not found!"));
+    // validation
+    if (!username || !password) {
+      return next(createError(400, "Username and password required"));
+    }
 
-    const isCorrect = bcrypt.compareSync(req.body.password, user.password);
+    // find user
+    const user = await User.findOne({ username });
 
-    if (!isCorrect)
-      return next(createError(400, "Wrong password or username!"));
+    if (!user) {
+      return next(createError(404, "User not found"));
+    }
 
+    // compare password
+    const isCorrect = bcrypt.compareSync(password, user.password);
+
+    if (!isCorrect) {
+      return next(createError(400, "Wrong username or password"));
+    }
+
+    // create token
     const token = jwt.sign(
-      { id: user._id, isSeller: user.isSeller },
-      process.env.JWT_KEY
+      {
+        id: user._id,
+        isSeller: user.isSeller,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "7d" }
     );
 
-    const { password, ...info } = user._doc;
+    // remove password from response
+    const { password: userPassword, ...info } = user._doc;
 
+    // send cookie
     res
-      .cookie("accessToken", {
+      .cookie("accessToken", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
       })
       .status(200)
       .json(info);
+
   } catch (err) {
     next(err);
   }
 };
 
+
 // ================= LOGOUT =================
 export const logout = (req, res) => {
   res
-    .clearCookie("accessToken", { httpOnly: true })
+    .clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    })
     .status(200)
-    .send("User has been logged out.");
+    .json({
+      success: true,
+      message: "User logged out successfully",
+    });
 };
+
 
 // ================= SEND RESET OTP =================
 export const sendResetOTP = async (req, res, next) => {
@@ -90,8 +133,9 @@ export const sendResetOTP = async (req, res, next) => {
     // generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
+    // save otp and expiry
     user.resetOTP = otp;
-    user.resetOTPExpire = Date.now() + 30 * 1000;
+    user.resetOTPExpire = Date.now() + 5 * 60 * 1000;
 
     await user.save();
 
@@ -103,21 +147,21 @@ export const sendResetOTP = async (req, res, next) => {
 
 Your OTP is: ${otp}
 
-This code will expire in 30 sec.
+This code will expire in 5 minutes.
 
 - WorkWave Team`
     );
 
-    // console.log("OTP:", otp); // for testing
-
     res.status(200).json({
       success: true,
-      message: "OTP sent to email",
+      message: "OTP sent successfully to email",
     });
+
   } catch (err) {
     next(err);
   }
 };
+
 
 // ================= VERIFY OTP + RESET PASSWORD =================
 export const verifyOTPAndResetPassword = async (req, res, next) => {
@@ -130,7 +174,9 @@ export const verifyOTPAndResetPassword = async (req, res, next) => {
 
     const user = await User.findOne({ email });
 
-    if (!user) return next(createError(404, "User not found"));
+    if (!user) {
+      return next(createError(404, "User not found"));
+    }
 
     if (!user.resetOTP || !user.resetOTPExpire) {
       return next(createError(400, "No reset request found"));
@@ -144,7 +190,8 @@ export const verifyOTPAndResetPassword = async (req, res, next) => {
       return next(createError(400, "OTP expired"));
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 5);
+    // hash new password
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     user.password = hashedPassword;
     user.resetOTP = "";
@@ -156,6 +203,7 @@ export const verifyOTPAndResetPassword = async (req, res, next) => {
       success: true,
       message: "Password reset successful",
     });
+
   } catch (err) {
     next(err);
   }
