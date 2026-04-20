@@ -37,7 +37,7 @@ function Gigs() {
       const max = maxRef.current?.value;
       if (min) params.set("min", min);
       if (max) params.set("max", max);
-      return newRequest.get(`/gigs?${params.toString()}`).then((r) => r.data);
+      return newRequest.get(`/gigs?${params.toString()}`).then((r) => r.data.data);
     },
   });
 

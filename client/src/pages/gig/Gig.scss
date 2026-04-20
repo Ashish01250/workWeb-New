@@ -1,10 +1,3 @@
-// ═══════════════════════════════════════════════════════════
-//  GIG PAGE — Premium Fiverr-clone styling
-//  Font: 'Plus Jakarta Sans' (import in index.html or App.css)
-//  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-// ═══════════════════════════════════════════════════════════
-
-// ── Design Tokens ────────────────────────────────────────────
 :root {
   --green:        #1dbf73;
   --green-dark:   #19a463;
@@ -23,6 +16,7 @@
   --radius-xs:    5px;
   --font:         'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
   --transition:   0.22s cubic-bezier(.4,0,.2,1);
+  --navbar-height: 110px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,6 +25,7 @@
 .gigPage {
   background: var(--bg);
   min-height: 100vh;
+  padding-top: 20px;
   padding: 32px 0 100px;
   font-family: var(--font);
   color: var(--text);
@@ -42,8 +37,8 @@
   margin: 0 auto;
   padding: 0 28px;
   display: grid;
-  grid-template-columns: 1fr 368px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 40px;
   align-items: start;
 
   @media (max-width: 960px) {
@@ -182,6 +177,24 @@
   background: #111;
   box-shadow: 0 4px 24px rgba(0,0,0,.13);
   position: relative;
+  
+  width: 100%;
+  max-width: 100%;
+
+  .swiper {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .swiper-wrapper {
+    max-width: 100%;
+  }
+
+  .swiper-slide {
+    width: 100% !important;
+  }
+
 
   // Swiper overrides
   .swiper-button-prev,
@@ -360,9 +373,16 @@
 .gigRight {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   position: sticky;
-  top: 24px;
+  top: calc(var(--navbar-height) + 10px);
+  width: 100%;
+  max-width: 360px;
+
+  align-self: start;
+
+  margin-left: auto;
+  transition: top 0.2s ease;
 }
 
 // ── Seller Box ────────────────────────────────────────────────
@@ -489,6 +509,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  margin-top: 6px;
   box-shadow: 0 4px 20px rgba(0,0,0,.09);
   transition: box-shadow var(--transition);
   &:hover { box-shadow: 0 8px 32px rgba(0,0,0,.13); }

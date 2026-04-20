@@ -12,11 +12,10 @@ export const deleteUser = async (req, res, next) => {
 };
 export const getUser = async (req, res, next) => {
   try {
-    console.log(req.params);
     const user = await User.findById(req.params.id);
   
     res.status(200).send(user);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };

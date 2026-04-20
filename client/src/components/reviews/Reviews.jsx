@@ -29,13 +29,8 @@ const Reviews = ({ gigId }) => {
       queryClient.invalidateQueries(["reviews", gigId]);
     },
     onError: (err) => {
-      const msg =
-        err?.response?.data?.message ||
-        "You have already reviewed this gig!";
-
-      setErrorToast(msg);
-
-      setTimeout(() => setErrorToast(""), 3000);
+      setErrorToast(err?.response?.data?.message || "Something went wrong!");
+      setTimeout(() => setErrorToast(""), 4000);
     },
   });
 
@@ -43,92 +38,104 @@ const Reviews = ({ gigId }) => {
     e.preventDefault();
     const desc = e.target.desc.value;
     const star = Number(e.target.star.value);
-
     mutation.mutate({ gigId, desc, star });
     e.target.reset();
   };
 
   const total = data.length;
-  const avg =
-    total > 0
-      ? (data.reduce((sum, r) => sum + r.star, 0) / total).toFixed(1)
-      : null;
+  const avg = total > 0 
+    ? (data.reduce((sum, r) => sum + r.star, 0) / total).toFixed(1) 
+    : null;
 
   return (
     <div className="reviews">
-      {/* 🔥 Animated Error Toast */}
+      {/* Error Toast */}
       {errorToast && (
-        <div className="toastError slideDown">
-          <img src="/img/error.png" alt="error" />
-          {errorToast}
+        <div className="toastError">
+          <img src="/img/error.png" alt="" />
+          <span>{errorToast}</span>
         </div>
       )}
 
-      {/* Header */}
+      {/* Header Section */}
       <div className="reviews-header fadeIn">
-        <h2>Customer Reviews</h2>
-        <div className="reviews-meta">
-          <span className="count">{total} review{total !== 1 ? "s" : ""}</span>
-          {avg && (
-            <span className="avg">
-              <img src="/img/star.png" alt="rating" />
-              {avg}
-            </span>
-          )}
+        <div className="title-area">
+          <h2>Customer Reviews</h2>
+          <span className="count-pill">{total} Total</span>
         </div>
+        {avg && (
+          <div className="avg-badge">
+            <img src="/img/star.png" alt="" />
+            <span className="score">{avg}</span>
+          </div>
+        )}
       </div>
 
-      {/* Review LIST */}
-      {isLoading ? (
-        <p className="status">Loading reviews...</p>
-      ) : error ? (
-        <p className="status error">Failed to load reviews.</p>
-      ) : total === 0 ? (
-        <p className="status">No reviews yet.</p>
-      ) : (
-        <div className="reviews-list fadeInUp">
-          {data.map((review) => (
-            <Review key={review._id} review={review} />
-          ))}
-        </div>
-      )}
+      <div className="reviews-container">
+        {/* State Handling */}
+        {isLoading ? (
+          <div className="status-box loading">
+            <div className="spinner"></div>
+            <p>Fetching the latest reviews...</p>
+          </div>
+        ) : error ? (
+          <div className="status-box error">
+            <p>We couldn't load the reviews. Please try again.</p>
+          </div>
+        ) : total === 0 ? (
+          <div className="status-box empty">
+            <p>No reviews yet. Be the first to share your thoughts!</p>
+          </div>
+        ) : (
+          <div className="reviews-list">
+            {data.map((review, index) => (
+              <div 
+                key={review._id} 
+                className="list-item-wrapper fadeInUp" 
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <Review review={review} />
+              </div>
+            ))}
+          </div>
+        )}
 
-      {/* ➤ ONLY Buyers Can Write a Review */}
-      {!isSeller && currentUser && (
-        <div className="add floatUp">
-          <h3>Write a Review</h3>
-          <form className="addForm" onSubmit={handleSubmit}>
-            <textarea
-              name="desc"
-              placeholder="Share your experience…"
-              required
-            />
-
-            <div className="form-row">
-              <select name="star" defaultValue="" required>
-                <option value="" disabled>
-                  Select rating
-                </option>
-                <option value="1">⭐ Very Bad</option>
-                <option value="2">⭐⭐ Bad</option>
-                <option value="3">⭐⭐⭐ Good</option>
-                <option value="4">⭐⭐⭐⭐ Very Good</option>
-                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-              </select>
-
-              <button type="submit" disabled={mutation.isLoading}>
-                {mutation.isLoading ? "Submitting…" : "Submit"}
-              </button>
+        {/* Action Section */}
+        {!isSeller && currentUser ? (
+          <div className="add-review-section floatUp">
+            <div className="add-card">
+              <h3>Write a Review</h3>
+              <form className="addForm" onSubmit={handleSubmit}>
+                <textarea
+                  name="desc"
+                  placeholder="What was it like working with this seller?"
+                  required
+                />
+                <div className="form-footer">
+                  <div className="input-group">
+                    <label>Rating</label>
+                    <select name="star" defaultValue="" required>
+                      <option value="" disabled>Select ⭐</option>
+                      <option value="5">5 - Excellent</option>
+                      <option value="4">4 - Very Good</option>
+                      <option value="3">3 - Good</option>
+                      <option value="2">2 - Poor</option>
+                      <option value="1">1 - Awful</option>
+                    </select>
+                  </div>
+                  <button type="submit" disabled={mutation.isPending}>
+                    {mutation.isPending ? "Posting..." : "Post Review"}
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      )}
-
-      {isSeller && (
-        <p className="noticeSeller fadeIn">
-          Sellers cannot write reviews on their own gig.
-        </p>
-      )}
+          </div>
+        ) : isSeller ? (
+          <div className="notice-banner seller-notice fadeIn">
+            <p>You are viewing this as a Seller. Feedback is provided by your buyers.</p>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };

@@ -15,7 +15,6 @@ export const createGig = async (req, res, next) => {
     });
 
     const savedGig = await newGig.save();
-
     return res.status(201).json({
       success: true,
       data: savedGig,
@@ -111,7 +110,8 @@ export const deleteGig = async (req, res, next) => {
 export const getGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id);
-
+    
+    
     if (!gig) {
       return next(createError(404, "Gig not found"));
     }

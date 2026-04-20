@@ -16,7 +16,7 @@ function MyGigs() {
     data: gigs,
   } = useQuery({
     queryKey: ["myGigs"],
-    queryFn: () => newRequest.get("/gigs/mine").then((res) => res.data),
+    queryFn: () => newRequest.get("/gigs/mine").then((res) => res.data.data),
     enabled: !!currentUser && currentUser.isSeller,
   });
 

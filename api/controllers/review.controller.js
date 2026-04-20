@@ -41,7 +41,6 @@ export const getReviews = async (req, res, next) => {
     const reviews = await Review.find({ gigId: req.params.gigId });
     const reviewers = [];
     for (let i = 0; i < reviews.length; i++) {
-      console.log(reviews[i].userId);
       const reviewer = await userModel
         .findById(reviews[i].userId)
         .select("username country");

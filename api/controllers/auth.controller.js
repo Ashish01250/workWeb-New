@@ -9,7 +9,7 @@ import { sendEmail } from "../utils/sendEmail.js";
 export const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-
+     
     // validation
     if (!username || !email || !password) {
       return next(createError(400, "All fields are required"));
