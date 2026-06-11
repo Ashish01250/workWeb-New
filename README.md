@@ -1,6 +1,6 @@
 # WorkWave — Talent Marketplace
 
-**Live Demo:** [workwave.in](https://www.workwave.in)
+**Live Demo:** [workwave.in](https://www.workwave.in) &nbsp;|&nbsp; **Repository:** [github.com/Ashish01250/workWeb-New](https://github.com/Ashish01250/workWeb-New)
 
 WorkWave is a full-stack talent marketplace that connects recruiters and skilled professionals through a secure, payment-gated communication workflow, real-time messaging, and transparent project management.
 
@@ -8,54 +8,73 @@ Unlike traditional freelancing platforms, WorkWave introduces a **controlled con
 
 ---
 
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Running the Project](#-running-the-project)
+- [Project Structure](#-project-structure)
+- [Architecture Overview](#-architecture-overview)
+- [Project Goals](#-project-goals)
+- [Developed By](#-developed-by)
+
+---
+
 ## ✨ Features
 
-### Authentication & Security
+### 🔐 Authentication & Security
 - Secure registration and login
 - JWT-based authentication
 - Role-based authorization and protected routes
 - Password reset via email
 - Secure session management
 
-### User Profiles
+### 👤 User Profiles
 - Recruiter and professional profiles
 - Portfolio showcase and skills management
 - Profile editing and updates
 
-### Opportunity & Project Management
+### 💼 Opportunity & Project Management
 - Create, publish, and edit opportunities
 - Browse and filter available listings
 - Featured opportunity placements
-- Advanced search functionality
+- Advanced search and filtering
 
-### Smart Communication System
+### 💬 Smart Communication System
 - Real-time messaging powered by Socket.io
 - Instant message delivery and conversation history
 - Secure, channel-based communication
+- Live conversation updates and fast event synchronization
 
-### Controlled Contact Access
+### 🛡 Controlled Contact Access
 One of WorkWave's most distinctive features:
-- Limited messaging is available before payment
+- Limited messaging available before payment
 - Direct contact details remain protected during the initial phase
-- Full communication unlocks after successful payment
+- Full, unrestricted communication unlocks after successful payment
+- Both parties can collaborate freely throughout the project lifecycle
 - Prevents spam, fake inquiries, and off-platform transactions
 
-### Secure Payment Workflow
+### 💳 Secure Payment Workflow
 - Platform-mediated project transactions
 - Payment verification and order tracking
 - Full transaction transparency
-- WorkWave acts as a trusted intermediary
+- WorkWave acts as a trusted intermediary for all payments
 
-### Reviews & Reputation
+### ⭐ Reviews & Reputation
 - Post-project ratings and written reviews
-- Trust indicators and reputation scores for both roles
+- Trust indicators and reputation scores for both recruiters and professionals
+- Reputation building over time
 
-### Email Notifications
-- Password recovery
-- Project updates and account alerts
+### 📧 Email Notifications
+- Password recovery emails
+- Project update alerts
+- Account communication via SendGrid
 
-### Responsive Design
+### 📱 Responsive Design
 - Fully responsive, mobile-friendly interface
+- Modern UI/UX built with Tailwind CSS and SCSS
 - Optimized performance and fast navigation
 
 ---
@@ -64,7 +83,7 @@ One of WorkWave's most distinctive features:
 
 ### Frontend
 - React.js + Vite
-- Redux
+- Redux (state management)
 - Tailwind CSS + SCSS
 - Axios
 - Socket.io Client
@@ -73,22 +92,144 @@ One of WorkWave's most distinctive features:
 - Node.js + Express.js
 - MongoDB + Mongoose
 - JWT + Bcrypt
-- Nodemailer
+- Nodemailer / SendGrid
+- Cloudinary (media uploads)
 - Socket.io
 
 ### Infrastructure
-- **Frontend:** Vercel
-- **Backend:** Render
-- **Database:** MongoDB Atlas
+| Service | Provider |
+|---|---|
+| Frontend | Vercel |
+| Backend | Render |
+| Database | MongoDB Atlas |
+| Media Storage | Cloudinary |
+| Email | SendGrid |
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run WorkWave locally on your machine.
+
+### Prerequisites
+
+Make sure you have the following installed before proceeding:
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Git](https://git-scm.com/)
+- A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) account (free tier works)
+- A [Cloudinary](https://cloudinary.com/) account (free tier works)
+- A [Stripe](https://stripe.com/) account for payment keys
+- A [SendGrid](https://sendgrid.com/) account for email services
+
+### Step 1 — Clone the Repository
+
+```bash
+git clone https://github.com/Ashish01250/workWeb-New.git
+cd workWeb-New
+```
+
+### Step 2 — Install Backend Dependencies
+
+```bash
+cd api
+npm install
+```
+
+### Step 3 — Install Frontend Dependencies
+
+```bash
+cd ../client
+npm install
+```
+
+---
+
+## 🔑 Environment Variables
+
+### Backend — create a `.env` file inside the `api` folder
+
+```bash
+cd api
+touch .env
+```
+
+Add the following variables to `api/.env`:
+
+```env
+# Server
+PORT=8800
+
+# MongoDB
+MONGO_URI=your_mongodb_atlas_connection_string
+
+# JWT
+JWT_KEY=your_jwt_secret_key
+
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_secret_key
+
+# SendGrid
+SENDGRID_API_KEY=your_sendgrid_api_key
+EMAIL_FROM=your_verified_sender_email@example.com
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+```
+
+### Frontend — create a `.env` file inside the `client` folder
+
+```bash
+cd client
+touch .env
+```
+
+Add the following to `client/.env`:
+
+```env
+VITE_API_URL=http://localhost:8800/api
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+```
+
+> ⚠️ Never commit your `.env` files to GitHub. Make sure `.env` is listed in your `.gitignore`.
+
+---
+
+## ▶ Running the Project
+
+You need **two terminals** — one for the backend and one for the frontend.
+
+### Terminal 1 — Start the Backend
+
+```bash
+cd api
+npm start
+```
+
+The backend will run at: `http://localhost:8800`
+
+### Terminal 2 — Start the Frontend
+
+```bash
+cd client
+npm run dev
+```
+
+The frontend will run at: `http://localhost:5173`
+
+Open your browser and visit **http://localhost:5173** to use WorkWave locally.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-WORKWAVE-MAIN
+workWeb-New
 │
-├── api
+├── api                         # Backend (Node.js + Express)
 │   ├── controllers
 │   │   ├── auth.controller.js
 │   │   ├── conversation.controller.js
@@ -117,11 +258,11 @@ WORKWAVE-MAIN
 │   ├── utils
 │   │   ├── createError.js
 │   │   └── sendEmail.js
-│   ├── .env
+│   ├── .env                    # Backend environment variables (not committed)
 │   ├── package.json
 │   └── server.js
 │
-└── client
+└── client                      # Frontend (React + Vite)
     ├── public
     │   └── img
     └── src
@@ -172,8 +313,10 @@ WORKWAVE-MAIN
 | Backend | Node.js + Express.js + JWT Authentication |
 | Database | MongoDB Atlas |
 | Real-time | Socket.io |
-| Email | Nodemailer |
-| Deployment | Vercel + Render + MongoDB Atlas |
+| Media Uploads | Cloudinary |
+| Email | SendGrid / Nodemailer |
+| Payments | Stripe |
+| Deployment | Vercel (frontend) + Render (backend) |
 
 ---
 
@@ -189,15 +332,17 @@ WORKWAVE-MAIN
 
 ## 👨‍💻 Developed By
 
-**Ashish Kumar** — Full-Stack MERN Developer
+**Aryan Singh** — Full-Stack MERN Developer
 
 **Skills demonstrated:**
-- Full-stack web development
+- Full-stack web development (MERN)
 - REST API design and implementation
 - Authentication and authorization systems
 - Real-time communication with Socket.io
 - MongoDB schema design
-- Payment workflow implementation
+- Payment workflow implementation with Stripe
+- Media management with Cloudinary
+- Email service integration with SendGrid
 - Responsive UI/UX design
 - State management with Redux
 - Secure web application architecture
