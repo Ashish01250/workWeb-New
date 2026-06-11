@@ -1,142 +1,91 @@
-# 🚀 WorkWave – Professional Talent Marketplace & Recruitment Platform
+# WorkWave — Talent Marketplace
 
-**Live Demo:** https://www.workwave.in
+**Live Demo:** [workwave.in](https://www.workwave.in)
 
-WorkWave is a full-stack talent marketplace and workforce collaboration platform that connects recruiters, businesses, and skilled professionals in a secure and efficient digital ecosystem.
+WorkWave is a full-stack talent marketplace that connects recruiters and skilled professionals through a secure, payment-gated communication workflow, real-time messaging, and transparent project management.
 
-Unlike traditional freelancing platforms, WorkWave introduces a controlled communication workflow where recruiters and professionals can initially exchange limited messages before payment. Once a project is approved and payment is completed, both parties gain unrestricted access to real-time communication and collaboration tools. This approach helps protect users, reduce spam, and ensure genuine project engagements.
-
-The platform acts as a trusted intermediary, where all project transactions are managed through the platform, providing accountability, transparency, and secure payment handling for both recruiters and professionals.
+Unlike traditional freelancing platforms, WorkWave introduces a **controlled contact system** — recruiters and professionals can exchange limited messages before payment. Once a project is approved and payment is completed, both parties unlock unrestricted real-time communication and collaboration. This protects users, eliminates spam, and ensures genuine project engagements.
 
 ---
 
-## ✨ Key Features
+## ✨ Features
 
-### 🔐 Authentication & Security
+### Authentication & Security
+- Secure registration and login
+- JWT-based authentication
+- Role-based authorization and protected routes
+- Password reset via email
+- Secure session management
 
-* Secure User Registration & Login
-* JWT-Based Authentication
-* Role-Based Authorization
-* Protected Routes
-* Password Reset via Email
-* Secure Session Management
+### User Profiles
+- Recruiter and professional profiles
+- Portfolio showcase and skills management
+- Profile editing and updates
 
-### 👤 User Profiles
+### Opportunity & Project Management
+- Create, publish, and edit opportunities
+- Browse and filter available listings
+- Featured opportunity placements
+- Advanced search functionality
 
-* Recruiter Profiles
-* Professional Profiles
-* Portfolio Showcase
-* Skills Management
-* Profile Editing & Updates
+### Smart Communication System
+- Real-time messaging powered by Socket.io
+- Instant message delivery and conversation history
+- Secure, channel-based communication
 
-### 💼 Opportunity & Project Management
+### Controlled Contact Access
+One of WorkWave's most distinctive features:
+- Limited messaging is available before payment
+- Direct contact details remain protected during the initial phase
+- Full communication unlocks after successful payment
+- Prevents spam, fake inquiries, and off-platform transactions
 
-* Create Opportunities
-* Publish Projects
-* Edit Existing Listings
-* Browse Available Opportunities
-* Advanced Search & Filtering
-* Featured Opportunities
+### Secure Payment Workflow
+- Platform-mediated project transactions
+- Payment verification and order tracking
+- Full transaction transparency
+- WorkWave acts as a trusted intermediary
 
-### 💬 Smart Communication System
+### Reviews & Reputation
+- Post-project ratings and written reviews
+- Trust indicators and reputation scores for both roles
 
-* Real-Time Messaging with Socket.io
-* Recruiter–Professional Conversations
-* Instant Message Delivery
-* Conversation History
-* Secure Communication Channels
+### Email Notifications
+- Password recovery
+- Project updates and account alerts
 
-### 🛡 Controlled Contact Access
-
-One of WorkWave's most distinctive features is its communication protection system:
-
-* Recruiters and professionals can communicate through limited messaging before payment.
-* Direct contact information remains protected during the initial discussion phase.
-* Once payment is successfully completed, unrestricted communication becomes available.
-* Both parties can collaborate freely throughout the project lifecycle.
-* Helps prevent spam, fake inquiries, and off-platform transactions.
-
-### 💳 Secure Payment Workflow
-
-* Platform-Mediated Transactions
-* Project Payment Management
-* Payment Verification
-* Order Tracking
-* Transaction Transparency
-
-WorkWave serves as the trusted intermediary responsible for managing project transactions, creating a safer environment for both recruiters and professionals.
-
-### ⭐ Review & Reputation System
-
-* Professional Reviews
-* Recruiter Feedback
-* Rating System
-* Reputation Building
-* Trust Indicators
-
-### 📧 Email Services
-
-* Password Recovery Emails
-* User Notifications
-* Project Updates
-* Account Communication
-
-### 📱 Responsive User Experience
-
-* Fully Responsive Design
-* Mobile-Friendly Interface
-* Modern User Experience
-* Fast Navigation
-* Optimized Performance
-
----
-
-## ⚡ Real-Time Technology
-
-WorkWave utilizes **Socket.io** to power its real-time communication infrastructure.
-
-Features include:
-
-* Instant Messaging
-* Live Conversation Updates
-* Real-Time User Interactions
-* Fast Event Synchronization
-* Improved User Engagement
-
-This architecture provides a seamless communication experience similar to modern collaboration platforms.
+### Responsive Design
+- Fully responsive, mobile-friendly interface
+- Optimized performance and fast navigation
 
 ---
 
 ## 🛠 Technology Stack
 
 ### Frontend
-
-* React.js
-* Vite
-* Redux
-* Axios
-* SCSS
-* Tailwind CSS
-* Socket.io Client
+- React.js + Vite
+- Redux
+- Tailwind CSS + SCSS
+- Axios
+- Socket.io Client
 
 ### Backend
+- Node.js + Express.js
+- MongoDB + Mongoose
+- JWT + Bcrypt
+- Nodemailer
+- Socket.io
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* JWT Authentication
-* Bcrypt
-* Nodemailer
-* Socket.io
+### Infrastructure
+- **Frontend:** Vercel
+- **Backend:** Render
+- **Database:** MongoDB Atlas
 
-### Database
+---
 
-* MongoDB Atlas
+## 📁 Project Structure
 
-### 📁 Project Structure
-
-```bash
+```
 WORKWAVE-MAIN
 │
 ├── api
@@ -148,10 +97,8 @@ WORKWAVE-MAIN
 │   │   ├── order.controller.js
 │   │   ├── review.controller.js
 │   │   └── user.controller.js
-│   │
 │   ├── middleware
 │   │   └── jwt.js
-│   │
 │   ├── models
 │   │   ├── user.model.js
 │   │   ├── gig.model.js
@@ -159,7 +106,6 @@ WORKWAVE-MAIN
 │   │   ├── review.model.js
 │   │   ├── conversation.model.js
 │   │   └── message.model.js
-│   │
 │   ├── routes
 │   │   ├── auth.route.js
 │   │   ├── user.route.js
@@ -168,152 +114,98 @@ WORKWAVE-MAIN
 │   │   ├── review.route.js
 │   │   ├── conversation.route.js
 │   │   └── message.route.js
-│   │
 │   ├── utils
 │   │   ├── createError.js
 │   │   └── sendEmail.js
-│   │
 │   ├── .env
 │   ├── package.json
 │   └── server.js
 │
-├── client
-│   ├── public
-│   │   └── img
-│   │
-│   ├── src
-│   │   ├── components
-│   │   │   ├── navbar
-│   │   │   ├── footer
-│   │   │   ├── featured
-│   │   │   ├── gigCard
-│   │   │   ├── projectCard
-│   │   │   ├── review
-│   │   │   ├── reviews
-│   │   │   ├── slide
-│   │   │   ├── trustedBy
-│   │   │   ├── checkoutForm
-│   │   │   └── ProtectedRoutes
-│   │   │
-│   │   ├── pages
-│   │   │   ├── home
-│   │   │   ├── gigs
-│   │   │   ├── gig
-│   │   │   ├── add
-│   │   │   ├── editGig
-│   │   │   ├── login
-│   │   │   ├── register
-│   │   │   ├── profile
-│   │   │   ├── orders
-│   │   │   ├── messages
-│   │   │   ├── message
-│   │   │   ├── myGigs
-│   │   │   ├── pay
-│   │   │   ├── success
-│   │   │   ├── forgotPassword
-│   │   │   └── resetPassword
-│   │   │
-│   │   ├── reducers
-│   │   ├── hooks
-│   │   ├── utils
-│   │   ├── socket.js
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   ├── package.json
-│   └── vite.config.js
-│
-└── README.md
+└── client
+    ├── public
+    │   └── img
+    └── src
+        ├── components
+        │   ├── navbar
+        │   ├── footer
+        │   ├── featured
+        │   ├── gigCard
+        │   ├── projectCard
+        │   ├── review
+        │   ├── reviews
+        │   ├── slide
+        │   ├── trustedBy
+        │   ├── checkoutForm
+        │   └── ProtectedRoutes
+        ├── pages
+        │   ├── home
+        │   ├── gigs
+        │   ├── gig
+        │   ├── add
+        │   ├── editGig
+        │   ├── login
+        │   ├── register
+        │   ├── profile
+        │   ├── orders
+        │   ├── messages
+        │   ├── message
+        │   ├── myGigs
+        │   ├── pay
+        │   ├── success
+        │   ├── forgotPassword
+        │   └── resetPassword
+        ├── reducers
+        ├── hooks
+        ├── utils
+        ├── socket.js
+        ├── App.jsx
+        └── main.jsx
 ```
-### Architecture Overview
-
-- Frontend: React + Vite + Redux + Socket.io Client
-- Backend: Node.js + Express.js + JWT Authentication
-- Database: MongoDB Atlas
-- Real-Time Communication: Socket.io
-- Email Service: Nodemailer
-- Deployment: Vercel + MongoDB Atlas
-
-### Deployment
-
-* Frontend: Vercel
-* Backend: Render
-* Database: MongoDB Atlas
 
 ---
 
-## 📌 Core Modules
+## 🏗 Architecture Overview
 
-### Authentication
-
-* User Registration
-* Login & Logout
-* Password Recovery
-* Email Verification
-
-### User Management
-
-* Recruiter Dashboard
-* Professional Dashboard
-* Profile Management
-
-### Project Management
-
-* Create Projects
-* Manage Opportunities
-* Browse Opportunities
-
-### Messaging System
-
-* Real-Time Chat
-* Conversations
-* Message Management
-
-### Reviews & Ratings
-
-* Feedback System
-* Reputation Management
-
-### Payment Workflow
-
-* Project Transactions
-* Payment Verification
-* Order Management
+| Layer | Technology |
+|---|---|
+| Frontend | React + Vite + Redux + Socket.io Client |
+| Backend | Node.js + Express.js + JWT Authentication |
+| Database | MongoDB Atlas |
+| Real-time | Socket.io |
+| Email | Nodemailer |
+| Deployment | Vercel + Render + MongoDB Atlas |
 
 ---
 
 ## 🎯 Project Goals
 
-* Create a trusted digital hiring ecosystem.
-* Simplify recruiter-professional collaboration.
-* Provide secure communication channels.
-* Enable transparent project transactions.
-* Deliver a real-time and responsive user experience.
+- Build a trusted digital hiring ecosystem
+- Simplify recruiter–professional collaboration
+- Protect communication until genuine project intent is confirmed
+- Enable transparent, platform-managed transactions
+- Deliver a real-time, responsive user experience
 
 ---
 
 ## 👨‍💻 Developed By
 
-**Aryan Singh**
+**Aryan Singh** — Full-Stack MERN Developer
 
-Full Stack MERN Developer
-
-### Skills Demonstrated
-
-* Full-Stack Development
-* REST API Development
-* Authentication & Authorization
-* Real-Time Systems with Socket.io
-* MongoDB Database Design
-* Payment Workflow Implementation
-* Responsive UI/UX Design
-* State Management
-* Secure Web Application Architecture
+**Skills demonstrated:**
+- Full-stack web development
+- REST API design and implementation
+- Authentication and authorization systems
+- Real-time communication with Socket.io
+- MongoDB schema design
+- Payment workflow implementation
+- Responsive UI/UX design
+- State management with Redux
+- Secure web application architecture
 
 ---
 
 ## 🌐 Live Project
 
-https://www.workwave.in
+[https://www.workwave.in](https://www.workwave.in)
 
-If you find this project interesting, consider giving it a ⭐ on GitHub.
+If you find this project useful, consider giving it a ⭐ on GitHub.
