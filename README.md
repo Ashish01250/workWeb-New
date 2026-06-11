@@ -189,7 +189,7 @@ WORKWAVE-MAIN
 
 ## 👨‍💻 Developed By
 
-**Aryan Singh** — Full-Stack MERN Developer
+**Ashish Kumar** — Full-Stack MERN Developer
 
 **Skills demonstrated:**
 - Full-stack web development
